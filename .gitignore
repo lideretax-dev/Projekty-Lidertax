@@ -1,0 +1,53 @@
+# Sekrety i konfiguracja lokalna
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.p12
+*.pfx
+secrets.*
+credentials.*
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+env/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Node / JavaScript
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+dist/
+build/
+
+# System i edytory
+.DS_Store
+Thumbs.db
+Desktop.ini
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logi i pliki tymczasowe
+*.log
+logs/
+tmp/
+temp/
+.cache/
+
+# Pliki lokalne narzędzi AI
+.codex/
+.agents/
+.hermes/
+sessions/
+memory/
+memories/

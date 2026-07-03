@@ -1,0 +1,11 @@
+# Domyślnie traktuj pliki tekstowe jako tekst i normalizuj końce linii.
+* text=auto
+
+# Markdown i pliki konfiguracyjne zawsze jako tekst.
+*.md text eol=lf
+*.txt text eol=lf
+*.json text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.toml text eol=lf
+*.ps1 text eol=crlf
