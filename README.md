@@ -23,6 +23,10 @@ docs/
   notatki.md
 ```
 
+## Projekty
+
+- [Bitrix24 - urodziny klientów](projekty/bitrix24-urodziny/README.md)
+
 ## Status
 
 Repozytorium jest przygotowywane jako bezpieczna baza startowa.
