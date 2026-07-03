@@ -7,8 +7,8 @@ Codziennie sprawdzić kontakty w Bitrix24 i znaleźć klientów, którzy mają u
 ## Założenia startowe
 
 - Źródłem danych jest lista kontaktów w Bitrix24.
-- Data urodzenia jest zapisana w polu kontaktu widocznym jako `DOB`.
-- Język komunikacji wynika z pola `Language - English`.
+- Data urodzenia jest zapisana w polu kontaktu widocznym jako `DOB`, technicznie `UF_CRM_1603538271`.
+- Język komunikacji wynika z pola `Language - English`, technicznie `UF_CRM_1664831304`.
 - Jeśli `Language - English = yes`, wiadomość ma być po angielsku.
 - Jeśli `Language - English` ma dowolną inną wartość niż `yes`, wiadomość ma być po polsku.
 - Na starcie nie wysyłamy wiadomości automatycznie.
@@ -51,11 +51,10 @@ Lidertax Team
 
 ## Informacje, które musimy jeszcze ustalić
 
-- Dokładna nazwa pola API dla `DOB` w Bitrix24.
-- Dokładna nazwa pola API dla `Language - English`.
 - Czy wiadomości mają być wysyłane z Bitrix24, Outlooka, Gmaila czy innego systemu.
 - O której godzinie ma powstawać codzienny raport.
 - Czy w pierwszej wersji wystarczy raport na Telegram, czy potrzebny jest też plik CSV/Excel.
+- Czy do urodzin używamy wyłącznie pola `DOB`, czy awaryjnie także standardowego `BIRTHDATE`.
 
 ## Etapy
 
