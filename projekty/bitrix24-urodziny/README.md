@@ -85,3 +85,22 @@ C:\Users\kento\AppData\Local\hermes\hermes-agent\venv\Scripts\python.exe projekt
 ```
 
 Skrypt tworzy dwa pliki lokalne: `.txt` do czytania i `.csv` do Excela. Folder `reports/` jest ignorowany przez Git, bo może zawierać dane klientów.
+
+## Pliki do dwukliku
+
+W głównym folderze repozytorium są dwa pliki:
+
+```text
+raport-dzienny.bat
+raport-tygodniowy.bat
+```
+
+`raport-dzienny.bat` tworzy raport urodzin na dziś.
+
+`raport-tygodniowy.bat` tworzy raport urodzin na najbliższe 7 dni.
+
+Oba pliki zapisują wyniki w:
+
+```text
+reports\bitrix24-urodziny
+```
