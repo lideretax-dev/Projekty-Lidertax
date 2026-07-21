@@ -117,3 +117,19 @@ Po uruchomieniu na pulpicie pojawią się:
 Raport urodzin dzienny
 Raport urodzin tygodniowy
 ```
+
+## Autostart po zalogowaniu
+
+Żeby raport dzienny uruchamiał się automatycznie po zalogowaniu do Windows, uruchom:
+
+```text
+wlacz-autostart-raportu-dziennego.bat
+```
+
+Żeby wyłączyć autostart, uruchom:
+
+```text
+wylacz-autostart-raportu-dziennego.bat
+```
+
+Autostart działa tylko wtedy, gdy laptop jest włączony i użytkownik zaloguje się do Windows.
