@@ -96,8 +96,28 @@ def masked(value: str, show_pii: bool) -> str:
     return value[:1] + "***"
 
 
+def clean_greeting_name(first_name: str, last_name: str, language: str) -> str:
+    raw_name = (first_name or "").strip()
+    name = raw_name.strip(",")
+    surname = (last_name or "").strip().strip(",")
+
+    if raw_name.endswith(",") and surname:
+        return surname
+
+    if "," in name:
+        parts = [part.strip() for part in name.split(",") if part.strip()]
+        name = parts[-1] if parts else ""
+
+    if language == "EN":
+        fallback = "there"
+    else:
+        fallback = "Kliencie"
+
+    return name or surname or fallback
+
+
 def message_template(first_name: str, language: str) -> str:
-    name = first_name or "Kliencie"
+    name = first_name or ("there" if language == "EN" else "Kliencie")
     if language == "EN":
         return (
             f"Dear {name}, wishing you a very happy birthday, good health, "
@@ -163,7 +183,7 @@ def build_report(contacts: list[dict[str, Any]], target_date: dt.date, show_pii:
 
     for idx, (contact, birthday, first_name, last_name, language, email) in enumerate(matches, start=1):
         display_name = f"{masked(first_name, show_pii)} {masked(last_name, show_pii)}".strip()
-        template_name = first_name if show_pii else "{first_name}"
+        template_name = clean_greeting_name(first_name, last_name, language) if show_pii else "{first_name}"
         lines.extend(
             [
                 f"{idx}. Kontakt ID: {contact.get('ID')}",
