@@ -63,3 +63,25 @@ Lidertax Team
 3. Przygotować codzienny raport urodzin.
 4. Dodać zatwierdzanie wiadomości przez człowieka.
 5. Dopiero na końcu dodać wysyłkę automatyczną, jeśli testy będą bezpieczne.
+
+## Uruchamianie raportów
+
+Raport dzienny na dziś, z pełnymi danymi i zapisem do plików:
+
+```cmd
+C:\Users\kento\AppData\Local\hermes\hermes-agent\venv\Scripts\python.exe projekty\bitrix24-urodziny\bitrix_birthdays.py --show-pii --output-dir reports\bitrix24-urodziny
+```
+
+Raport na wybraną datę:
+
+```cmd
+C:\Users\kento\AppData\Local\hermes\hermes-agent\venv\Scripts\python.exe projekty\bitrix24-urodziny\bitrix_birthdays.py --date 2026-07-21 --show-pii --output-dir reports\bitrix24-urodziny
+```
+
+Raport tygodniowy od wybranej daty:
+
+```cmd
+C:\Users\kento\AppData\Local\hermes\hermes-agent\venv\Scripts\python.exe projekty\bitrix24-urodziny\bitrix_birthdays.py --date 2026-07-21 --days 7 --show-pii --output-dir reports\bitrix24-urodziny
+```
+
+Skrypt tworzy dwa pliki lokalne: `.txt` do czytania i `.csv` do Excela. Folder `reports/` jest ignorowany przez Git, bo może zawierać dane klientów.

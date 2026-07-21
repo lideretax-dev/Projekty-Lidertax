@@ -44,6 +44,9 @@ tmp/
 temp/
 .cache/
 
+# Lokalne raporty z danymi klientów
+reports/
+
 # Pliki lokalne narzędzi AI
 .codex/
 .agents/
