@@ -104,3 +104,16 @@ Oba pliki zapisują wyniki w:
 ```text
 reports\bitrix24-urodziny
 ```
+
+Żeby utworzyć skróty na pulpicie, uruchom w głównym folderze repozytorium:
+
+```text
+utworz-skroty-na-pulpicie.bat
+```
+
+Po uruchomieniu na pulpicie pojawią się:
+
+```text
+Raport urodzin dzienny
+Raport urodzin tygodniowy
+```
