@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import json
 import os
+import urllib.error
 import urllib.parse
 import urllib.request
 from pathlib import Path
@@ -68,6 +69,12 @@ def bitrix_call(base_url: str, method: str, params: list[tuple[str, Any]] | None
 def print_method_result(base_url: str, method: str) -> bool:
     try:
         bitrix_call(base_url, method)
+    except urllib.error.HTTPError as exc:
+        if exc.code == 400:
+            print(f"- {method}: WIDOCZNA (Bitrix zwrocil 400, bo test nie podaje wymaganych pol)")
+            return True
+        print(f"- {method}: NIE ({type(exc).__name__}: HTTP {exc.code})")
+        return False
     except Exception as exc:  # noqa: BLE001 - diagnostics should print any API/network issue.
         print(f"- {method}: NIE ({type(exc).__name__}: {str(exc)[:120]})")
         return False
@@ -132,7 +139,7 @@ def main() -> int:
     if available.get("crm.activity.add"):
         print("Wniosek wstepny: webhook widzi CRM activity.")
         print("Mozemy przygotowac kolejny test, najpierw bez wysylania do klientow.")
-        print("Uwaga: to jeszcze nie potwierdza automatycznej wysylki e-mail z office@lidertax.co.uk.")
+        print("Uwaga: to jeszcze nie potwierdza, ze Bitrix wysle e-mail z office@lidertax.co.uk.")
     else:
         print("Wniosek wstepny: webhook prawdopodobnie nie ma pelnych uprawnien CRM activity.")
         print("Trzeba bedzie rozszerzyc uprawnienia webhooka w Bitrix24 albo uzyc innej metody wysylki.")
