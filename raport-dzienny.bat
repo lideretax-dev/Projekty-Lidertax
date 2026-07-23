@@ -8,7 +8,7 @@ echo  Bitrix24 - raport urodzin na dzis
 echo ===============================================
 echo.
 
-"C:\Users\kento\AppData\Local\hermes\hermes-agent\venv\Scripts\python.exe" projekty\bitrix24-urodziny\bitrix_birthdays.py --show-pii --output-dir reports\bitrix24-urodziny
+"C:\Users\kento\AppData\Local\hermes\hermes-agent\venv\Scripts\python.exe" projekty\bitrix24-urodziny\bitrix_birthdays.py --show-pii --output-dir reports\bitrix24-urodziny --telegram-summary
 
 echo.
 echo Raport zapisano w folderze:

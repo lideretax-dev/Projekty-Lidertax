@@ -133,3 +133,18 @@ wylacz-autostart-raportu-dziennego.bat
 ```
 
 Autostart działa tylko wtedy, gdy laptop jest włączony i użytkownik zaloguje się do Windows.
+
+## Telegram
+
+Raport dzienny może wysłać krótkie podsumowanie na Telegram. Wiadomość nie zawiera listy klientów ani adresów e-mail.
+
+W lokalnym pliku `.env` dodaj:
+
+```text
+TELEGRAM_BOT_TOKEN=tu_wklej_token_bota
+TELEGRAM_CHAT_ID=tu_wpisz_swoj_telegram_id
+```
+
+Nie zapisuj tokenu w repozytorium i nie wklejaj go na czacie.
+
+Po dodaniu tych wartości `raport-dzienny.bat` wyśle krótkie podsumowanie po wygenerowaniu raportu.

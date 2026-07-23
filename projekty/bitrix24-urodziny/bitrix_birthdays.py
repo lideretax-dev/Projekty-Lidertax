@@ -58,6 +58,18 @@ def bitrix_call(base_url: str, method: str, params: list[tuple[str, Any]] | None
     return data
 
 
+def telegram_call(bot_token: str, method: str, params: dict[str, Any]) -> dict[str, Any]:
+    url = f"https://api.telegram.org/bot{bot_token}/{method}"
+    encoded = urllib.parse.urlencode(params).encode("utf-8")
+    request = urllib.request.Request(url, data=encoded, method="POST")
+    with urllib.request.urlopen(request, timeout=30) as response:
+        payload = response.read().decode("utf-8")
+    data = json.loads(payload)
+    if not data.get("ok"):
+        raise RuntimeError(f"Telegram error: {data.get('description') or data}")
+    return data
+
+
 def parse_date(value: Any) -> dt.date | None:
     if not value:
         return None
@@ -269,6 +281,42 @@ def write_report_files(
     return [text_path, csv_path]
 
 
+def build_telegram_summary(rows: list[dict[str, str]], target_date: dt.date, days: int) -> str:
+    if days == 1:
+        date_label = target_date.isoformat()
+    else:
+        end_date = target_date + dt.timedelta(days=days - 1)
+        date_label = f"{target_date.isoformat()} - {end_date.isoformat()}"
+
+    pl_count = sum(1 for row in rows if row["language"] == "PL")
+    en_count = sum(1 for row in rows if row["language"] == "EN")
+    missing_email_count = sum(1 for row in rows if row["email"] == "-")
+
+    return "\n".join(
+        [
+            f"Raport urodzin Bitrix24: {date_label}",
+            f"Znaleziono: {len(rows)}",
+            f"PL: {pl_count}",
+            f"EN: {en_count}",
+            f"Bez e-maila: {missing_email_count}",
+            "Pliki raportu zapisane lokalnie.",
+        ]
+    )
+
+
+def send_telegram_summary(rows: list[dict[str, str]], target_date: dt.date, days: int) -> bool:
+    bot_token = load_env_value("TELEGRAM_BOT_TOKEN")
+    chat_id = load_env_value("TELEGRAM_CHAT_ID")
+    if not bot_token or not chat_id:
+        print("Telegram: pominięto, bo brakuje TELEGRAM_BOT_TOKEN albo TELEGRAM_CHAT_ID w .env.")
+        return False
+
+    message = build_telegram_summary(rows, target_date, days)
+    telegram_call(bot_token, "sendMessage", {"chat_id": chat_id, "text": message})
+    print("Telegram: wysłano krótkie podsumowanie raportu.")
+    return True
+
+
 def main() -> int:
     if hasattr(sys.stdout, "reconfigure"):
         sys.stdout.reconfigure(encoding="utf-8")
@@ -279,6 +327,7 @@ def main() -> int:
     parser.add_argument("--days", type=int, default=1, help="Number of days to include, for example 7.")
     parser.add_argument("--max-pages", type=int, default=None, help="Limit pages for testing.")
     parser.add_argument("--output-dir", default="", help="Optional directory for TXT and CSV report files.")
+    parser.add_argument("--telegram-summary", action="store_true", help="Send a short safe summary to Telegram.")
     parser.add_argument("--show-pii", action="store_true", help="Show names and emails in the report.")
     args = parser.parse_args()
 
@@ -308,6 +357,15 @@ def main() -> int:
         print("Zapisano pliki raportu:")
         for path in paths:
             print(f"- {path}")
+
+    if args.telegram_summary:
+        rows = collect_birthdays(contacts, target_date, args.days, False)
+        try:
+            send_telegram_summary(rows, target_date, args.days)
+        except (urllib.error.URLError, RuntimeError) as error:
+            print("Telegram: nie udało się wysłać podsumowania.", file=sys.stderr)
+            print(f"Szczegóły techniczne: {error}", file=sys.stderr)
+            return 1
     return 0
 
 
