@@ -138,13 +138,17 @@ def message_template(first_name: str, language: str) -> str:
     name = first_name or ("there" if language == "EN" else "Kliencie")
     if language == "EN":
         return (
-            f"Dear {name}, wishing you a very happy birthday, good health, "
-            "peace of mind and all the best for the year ahead. Lidertax Team"
+            f"Dear {name},\n\n"
+            "on your birthday, we wish you all the best, good health, peace of mind, "
+            "and every success in your personal and professional life.\n\n"
+            "Wishing you a wonderful day,\n"
+            "The Lidertax Team"
         )
     return (
-        f"Dzień dobry {name}, z okazji urodzin życzymy wszystkiego najlepszego, "
-        "dużo zdrowia, spokoju i samych dobrych decyzji w nadchodzącym roku. "
-        "Zespół Lidertax"
+        f"Dzień dobry {name},\n\n"
+        "z okazji urodzin życzymy wszystkiego najlepszego, dużo zdrowia, "
+        "spokoju oraz pomyślności w życiu prywatnym i zawodowym.\n\n"
+        "Wspaniałego dnia życzy cały zespół Lidertax."
     )
 
 
