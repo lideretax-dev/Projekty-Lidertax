@@ -8,6 +8,12 @@ Stan testów, szablony HTML PL/EN, konfiguracja i instrukcja odtworzenia:
 Testy Gmail SMTP są dostępne. Wysyłka testów urodzinowych odbywa się wyłącznie
 na `pm@lidertax.co.uk`; automatyczna wysyłka do klientów nie jest uruchomiona.
 
+Od 8 do 14 października 2026 działa siedmiodniowa próba podglądów przez
+`birthday_pilot.py`. Istniejący autostart `raport-dzienny.bat` uruchamia ją po
+zalogowaniu do Windows. Podglądy HTML PL/EN i jeden raport dzienny trafiają tylko
+na pm; lokalna historia SQLite blokuje duplikaty. Po próbie podglądy są wstrzymane.
+Szczegóły i obsługa błędów są w podlinkowanej instrukcji procesu.
+
 ## Cel
 
 Codziennie sprawdzić kontakty w Bitrix24 i znaleźć klientów, którzy mają urodziny danego dnia. Na początku agent ma przygotować raport i propozycję wiadomości do sprawdzenia przez człowieka. Dopiero po testach można rozważyć automatyczne wysyłanie maili.

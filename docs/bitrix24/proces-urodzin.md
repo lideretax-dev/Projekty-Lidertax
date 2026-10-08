@@ -8,7 +8,7 @@ Stan zapisany: 8 października 2026.
 - Raporty dzienne i tygodniowe; opcjonalne podsumowanie Telegram.
 - Gmail SMTP z konta `automation@lidertax.co.uk`.
 - Test dla kontaktu **5564**, który podczas testu miał imię `Test` i język PL.
-- Dwa osobne testy HTML PL i EN przyjęte przez Gmail SMTP; dostarczenie i wygląd tych dwóch wersji wymagają sprawdzenia w skrzynce.
+- Dwa osobne testy HTML PL i EN przyjęte przez Gmail SMTP; użytkownik potwierdził dostarczenie i zaakceptował wygląd obu wersji.
 - Wcześniejszy test tekstowy został potwierdzony na zrzucie skrzynki odbiorczej.
 
 ## Zasada wysyłki testowej
@@ -62,9 +62,40 @@ Wysyłka odczytuje kontakt 5564 z Bitrix. Po przyjęciu każdej wiadomości prze
 
 ## Ograniczenia i dalsze kroki
 
-Testy były uruchamiane ręcznie. Automatyczna wysyłka do klientów nie została uruchomiona. Przed jej wdrożeniem trzeba potwierdzić wygląd PL/EN na komputerze i telefonie oraz dodać trwałą historię wysyłek, ochronę przed duplikatami i osobny tryb produkcyjny.
+Wdrożona próba opisana poniżej automatyzuje podglądy wyłącznie do pm. Automatyczna wysyłka do klientów nie została uruchomiona i wymaga osobnej decyzji oraz implementacji. Nie istnieje tryb automatycznego przełączenia na klientów.
 
 Dokumentacja języka w starszych plikach mówi o `yes`; faktyczna implementacja akceptuje też wartości boolean/API wskazane wyżej. Tłumaczenia HTML są obecnie dokładnymi zamianami tekstu; zmiana źródłowego tekstu PL wymaga aktualizacji mapy `TRANSLATIONS`.
+
+## Wdrożona próba 7 dni — 8–14 października 2026
+
+Użytkownik zatwierdził wdrożenie. `birthday_pilot.py` uruchamia się przez istniejący skrót autostartu `Raport urodzin dzienny - autostart.lnk`, który wskazuje na `raport-dzienny.bat` w tym repozytorium. Po zalogowaniu do Windows:
+
+1. Ustala dzisiejszą datę w `Europe/London` (Python wymaga dostępnej bazy stref, np. pakietu `tzdata`; obecne środowisko ją ma).
+2. Pobiera kontakty Bitrix i wybiera osoby z urodzinami tego dnia. Podglądy powstają w języku kontaktu.
+3. Zapisuje lokalny raport TXT/CSV i wysyła osobny podgląd HTML dla każdego kontaktu **wyłącznie na pm@lidertax.co.uk**. Podgląd ma etykietę z ID kontaktu, datą i językiem; nie trafia do klienta.
+4. Wysyła jeden raport zbiorczy na pm, również gdy nie ma urodzin. Podczas próby ten e-mail zastępuje poprzednie automatyczne podsumowanie Telegram; ręczne narzędzia Telegram pozostają w repozytorium.
+5. Przy kolejnym logowaniu tego dnia nie ponawia podglądów ani raportu.
+
+Próba zaczęła się 8 października i trwa do 14 października włącznie. Od 15 października skrypt wstrzymuje podglądy i wysyła jednorazową wiadomość o zakończeniu próby przy najbliższym uruchomieniu. Nie uruchamia wysyłki do klientów i nie odnawia okresu próby.
+
+Komputer musi być włączony, użytkownik zalogowany, a internet dostępny. Codex nie musi działać. Brak połączenia z Bitrix jest ponawiany do trzech razy w odstępach 10 sekund, potem błąd zostaje zapisany w logu. Autostart pokazuje błąd i pozostawia okno do przeczytania. Nie ma uruchamiania w trakcie wyłączenia komputera, nadrabiania poprzednich dat ani automatycznego wznowienia w trakcie tej samej sesji po późniejszym podłączeniu internetu. W takiej sytuacji po przywróceniu sieci można uruchomić `raport-dzienny.bat` ręcznie.
+
+### Historia i blokowanie duplikatów
+
+Lokalny katalog `reports/bitrix24-urodziny/pilot/` zawiera:
+
+- `pilot-config.json` — nieodnawialny okres próby i stały odbiorca.
+- `delivery.sqlite3` — historia z kluczem kontakt+data dla podglądu i data dla raportu; nie wolno jej kasować, jeśli chcemy zachować ochronę przed ponowną wysyłką.
+- `pilot.log`, `last-run.json`, opcjonalnie `last-error.json` — diagnostyka bez haseł/webhooków; stary plik błędu może pozostać po późniejszym sukcesie, porównuj daty z logiem.
+- `daily-reports/` — lokalne raporty zawierające dane kontaktów.
+
+Plik blokady zapobiega równoległemu uruchomieniu. Rezerwacja wiadomości jest zapisywana w bazie **przed** SMTP. Status `accepted` oznacza przyjęcie przez SMTP, nie potwierdzenie doręczenia. Status `uncertain` lub pozostawiony `reserved` oznacza konieczność ręcznego sprawdzenia skrzynki; skrypt nie ponowi takiej wiadomości samodzielnie. Chroni to przed duplikatem przy przerwaniu procesu w trakcie wysyłki, kosztem konieczności ręcznej obsługi błędu.
+
+Ten katalog jest ignorowany przez Git. Kopia repozytorium nie zawiera historii wysyłek, konfiguracji okresu próby ani sekretów. Przy przenoszeniu na inny komputer przenieś ten katalog osobno bezpiecznym kanałem; samo sklonowanie repozytorium i uruchomienie skryptu utworzy nową próbę bez starej historii.
+
+Ręczne uruchomienie: `python projekty/bitrix24-urodziny/birthday_pilot.py --run` z katalogu repozytorium. Autostart korzysta ze skonfigurowanego lokalnego Pythona Hermes, co należy dostosować na innym komputerze.
+
+Testy offline: `python -m unittest discover -s projekty/bitrix24-urodziny -p test_birthday_pilot.py -v`. Sprawdzają PL/EN, odbiorcę/Cc, deduplikację po ponownym otwarciu bazy, blokadę procesu, zero urodzin, niepewny SMTP i zatrzymanie po 7 dniach.
 
 ## Codex na Windows — rozwiązany problem środowiska
 
