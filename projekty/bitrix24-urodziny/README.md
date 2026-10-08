@@ -1,5 +1,13 @@
 # Bitrix24 - urodziny klientów
 
+## Aktualny zapis procesu
+
+Stan testów, szablony HTML PL/EN, konfiguracja i instrukcja odtworzenia:
+[Proces urodzin Lidertax](../../docs/bitrix24/proces-urodzin.md).
+
+Testy Gmail SMTP są dostępne. Wysyłka testów urodzinowych odbywa się wyłącznie
+na `pm@lidertax.co.uk`; automatyczna wysyłka do klientów nie jest uruchomiona.
+
 ## Cel
 
 Codziennie sprawdzić kontakty w Bitrix24 i znaleźć klientów, którzy mają urodziny danego dnia. Na początku agent ma przygotować raport i propozycję wiadomości do sprawdzenia przez człowieka. Dopiero po testach można rozważyć automatyczne wysyłanie maili.
