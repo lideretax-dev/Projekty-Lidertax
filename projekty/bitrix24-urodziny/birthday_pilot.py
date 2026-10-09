@@ -199,12 +199,19 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--initialize', action='store_true', help='Initialize once without sending')
     parser.add_argument('--run', action='store_true', help='Run the internal pilot for today in London')
+    parser.add_argument('--not-before', default='', help='Do not run before HH:MM in Europe/London')
     args = parser.parse_args()
     os.chdir(REPO)
     STATE.mkdir(parents=True, exist_ok=True)
     logging.basicConfig(filename=STATE / 'pilot.log', level=logging.INFO,
                         format='%(asctime)s %(levelname)s %(message)s', encoding='utf-8')
     today = london_today()
+    if args.run and args.not_before:
+        earliest = datetime.strptime(args.not_before, '%H:%M').time()
+        if datetime.now(ZoneInfo('Europe/London')).time() < earliest:
+            LOG.info('Skipped before %s UK; waiting for daily schedule', args.not_before)
+            print('Waiting until ' + args.not_before + ' UK.')
+            return 0
     try:
         with run_lock(STATE):
             config = initialize(STATE, today)

@@ -99,6 +99,12 @@ Testy offline: `python -m unittest discover -s projekty/bitrix24-urodziny -p tes
 
 ## Codex na Windows — rozwiązany problem środowiska
 
+### Harmonogram 09:30 UK — przygotowany 9 października
+
+Po braku uruchomienia przy wybudzeniu użytkownik wybrał 09:30 UK. Przygotowano `ustaw-harmonogram-urodzin.bat` i `.ps1`: zadanie Windows `Lidertax - podglady urodzin`, codziennie o 09:30, po logowaniu z minutą opóźnienia oraz `StartWhenAvailable` dla pominiętego terminu. Komputer ma strefę `GMT Standard Time`. Skrypt używa `--not-before 09:30`, więc wcześniejsze logowanie nie wysyła podglądów. Deduplikacja chroni przed równoczesnym starym autostartem i zadaniem harmonogramu.
+
+Rejestracja z sesji Codex nie powiodła się (`Schedule.Service.GetFolder`: 0x80070003); użytkownik musi jednorazowo uruchomić instalator w zwykłej sesji Windows. Do czasu potwierdzenia zadania nadal działa tylko dotychczasowy autostart przy logowaniu. Uśpiony komputer nie jest celowo wybudzany; zadanie po pominiętym terminie może ruszyć z opóźnieniem po wybudzeniu, a wyłączony wymaga uruchomienia i zalogowania. Koniec próby nadal przypada po 14 października, bez przełączenia na klientów.
+
 Polecenia nie uruchamiały się z błędem `helper_unknown_error: setup refresh had errors`. W tym środowisku zmiana w lokalnym pliku `%USERPROFILE%\.codex\config.toml` pomogła:
 
 ```toml
