@@ -38,7 +38,7 @@ TRANSLATIONS = {
     'Życzymy Ci przede wszystkim zdrowia, spokoju i czasu na to, co sprawia Ci największą radość. Niech każdy dzień przynosi dobre chwile, życzliwych ludzi i energię do realizowania marzeń.': 'Above all, we wish you good health, peace of mind and time for the things that bring you joy. May each day be filled with happy moments, kind people and the energy to follow your dreams.',
     'Niech nadchodzący rok będzie pełen pomyślności — zarówno w życiu osobistym, jak i zawodowym. A dziś znajdź chwilę dla siebie i świętuj tak, jak lubisz najbardziej.': 'May the year ahead bring you happiness and success in your personal and professional life. And today, take some time for yourself and celebrate in whatever way makes you happiest.',
     'Dobrego roku.<br>Pięknych chwil.<br>Spełnionych marzeń.': 'A wonderful year.<br>Beautiful moments.<br>Dreams fulfilled.',
-    'Dziękujemy za zaufanie.': 'Thank you for your trust.',
+    'Serdeczne pozdrowienia,': 'Warm regards,',
     'Zespół Lidertax': 'The Lidertax Team',
     'Londyn &amp; Chatham': 'London &amp; Chatham',
 }
